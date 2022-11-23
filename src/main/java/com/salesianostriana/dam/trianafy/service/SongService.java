@@ -1,6 +1,8 @@
 package com.salesianostriana.dam.trianafy.service;
 
 
+import com.salesianostriana.dam.trianafy.dtos.SongRequestDTO;
+import com.salesianostriana.dam.trianafy.dtos.SongResponseDTO;
 import com.salesianostriana.dam.trianafy.model.Artist;
 import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.repos.SongRepository;
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class SongService {
 
     private final SongRepository repository;
+    private final ArtistService artistService;
 
     public Song add(Song song) {
         return repository.save(song);
@@ -38,6 +41,17 @@ public class SongService {
 
     public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    public boolean existsById(Long id) { return repository.existsById(id); }
+
+    public Song toSong(SongRequestDTO songDTO){
+        return Song.builder()
+                .title(songDTO.getTitle())
+                .album(songDTO.getAlbum())
+                .year(songDTO.getYear())
+                .artist(artistService.findById(songDTO.getArtistId()).get())
+                .build();
     }
 
 }
