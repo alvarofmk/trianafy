@@ -5,6 +5,7 @@ import com.salesianostriana.dam.trianafy.dtos.SongResponseDTO;
 import com.salesianostriana.dam.trianafy.model.Artist;
 import com.salesianostriana.dam.trianafy.model.Song;
 import com.salesianostriana.dam.trianafy.service.ArtistService;
+import com.salesianostriana.dam.trianafy.service.PlaylistService;
 import com.salesianostriana.dam.trianafy.service.SongService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,8 @@ import java.util.stream.Collectors;
 public class SongController {
 
     private final SongService songService;
-
     private final ArtistService artistService;
+    private final PlaylistService playlistService;
 
     @GetMapping("/song/")
     public ResponseEntity<List<SongResponseDTO>> getAllSongs(){
@@ -72,7 +73,14 @@ public class SongController {
     @DeleteMapping("/song/{id}")
     public ResponseEntity<?> deleteSong(@PathVariable Long id){
         if(songService.existsById(id)){
-            songService.deleteById(id);
+            Song toDelete = songService.findById(id).get();
+            playlistService.findAll().stream().filter(playlist -> playlist.getSongs().contains(toDelete)).forEach(playlist -> {
+                while (playlist.getSongs().contains(toDelete)){
+                    playlist.deleteSong(toDelete);
+                }
+                playlistService.edit(playlist);
+            });
+            songService.delete(toDelete);
         }
         return ResponseEntity.noContent().build();
     }
