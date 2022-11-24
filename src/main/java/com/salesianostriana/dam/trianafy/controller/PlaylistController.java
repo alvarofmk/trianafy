@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -38,7 +39,23 @@ public class PlaylistController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Playlists encontradas",
                     content = { @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = AllPlaylistsResponseDTO.class))) }),
+                            array = @ArraySchema(schema = @Schema(implementation = AllPlaylistsResponseDTO.class)),
+                            examples = @ExampleObject(value = """
+                                    [
+                                        {
+                                            "id": 12,
+                                            "name": "Random",
+                                            "description": "Una lista muy loca",
+                                            "numberOfSongs": 4
+                                        },
+                                        {
+                                            "id": 25,
+                                            "name": "Electro",
+                                            "description": "Drum n bass y otros",
+                                            "numberOfSongs": 457
+                                        }
+                                    ]
+                                    """)) }),
             @ApiResponse(responseCode = "404", description = "No se encuentra ninguna playlist",
                     content = @Content) })
     @GetMapping("/list/")
@@ -54,7 +71,30 @@ public class PlaylistController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Playlist encontrada",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = SinglePlaylistResponseDTO.class))}),
+                            schema = @Schema(implementation = SinglePlaylistResponseDTO.class),
+                            examples = @ExampleObject(value = """
+                                    {
+                                        "id": 12,
+                                        "name": "Random",
+                                        "description": "Una lista muy loca",
+                                        "songs": [
+                                            {
+                                                "id": 9,
+                                                "title": "Enter Sandman",
+                                                "artist": "Metallica",
+                                                "album": "Metallica",
+                                                "year": "1991"
+                                            },
+                                            {
+                                                "id": 8,
+                                                "title": "Love Again",
+                                                "artist": "Dua Lipa",
+                                                "album": "Future Nostalgia",
+                                                "year": "2021"
+                                            }
+                                        ]
+                                    }
+                                    """))}),
             @ApiResponse(responseCode = "404", description = "No se encuentra la playlist",
                     content = @Content) })
     @Parameter(description = "El id de la playlist a encontrar", name = "id", required = true)
@@ -67,7 +107,15 @@ public class PlaylistController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Playlist creada con éxito",
                     content = { @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = AllPlaylistsResponseDTO.class))) }),
+                            array = @ArraySchema(schema = @Schema(implementation = AllPlaylistsResponseDTO.class)),
+                            examples = @ExampleObject(value = """
+                                    {
+                                        "id": 13,
+                                        "name": "Electro",
+                                        "description": "Liquid DnB etc",
+                                        "numberOfSongs": 0
+                                    }
+                                    """)) }),
             @ApiResponse(responseCode = "400", description = "Los datos son incorrectos",
                     content = @Content) })
     @RequestBody(required = true, description = "Los datos de la nueva playlist")
@@ -83,7 +131,15 @@ public class PlaylistController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Playlist editada con éxito",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AllPlaylistsResponseDTO.class))}),
+                            schema = @Schema(implementation = AllPlaylistsResponseDTO.class),
+                            examples = @ExampleObject(value = """
+                                    {
+                                        "id": 13,
+                                        "name": "Electro",
+                                        "description": "Liquid, DnB, hardstep, dubstep, house, etc",
+                                        "numberOfSongs": 0
+                                    }
+                                    """))}),
             @ApiResponse(responseCode = "404", description = "No se encuentra la playlist",
                     content = @Content),
             @ApiResponse(responseCode = "400", description = "Los datos son incorrectos",
@@ -117,11 +173,23 @@ public class PlaylistController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Obtiene una canción de una playlist por su id")
+    @Operation(summary = "Obtiene una cancion de una playlist por su id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Canción encontrada",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = SongResponseDTO.class))}),
+                            schema = @Schema(implementation = Song.class),
+                            examples = @ExampleObject(value = """
+                                    {
+                                        "id": 9,
+                                        "title": "Enter Sandman",
+                                        "album": "Metallica",
+                                        "year": "1991",
+                                        "artist": {
+                                            "id": 3,
+                                            "name": "Metallica"
+                                        }
+                                    }
+                                    """))}),
             @ApiResponse(responseCode = "404", description = "No se encuentra la canción",
                     content = @Content) })
     @Parameters(value = {
@@ -137,7 +205,30 @@ public class PlaylistController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Playlist encontrada",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = SinglePlaylistResponseDTO.class))}),
+                            schema = @Schema(implementation = SinglePlaylistResponseDTO.class),
+                            examples = @ExampleObject(value = """
+                                    {
+                                        "id": 12,
+                                        "name": "Random",
+                                        "description": "Una lista muy loca",
+                                        "songs": [
+                                            {
+                                                "id": 9,
+                                                "title": "Enter Sandman",
+                                                "artist": "Metallica",
+                                                "album": "Metallica",
+                                                "year": "1991"
+                                            },
+                                            {
+                                                "id": 8,
+                                                "title": "Love Again",
+                                                "artist": "Dua Lipa",
+                                                "album": "Future Nostalgia",
+                                                "year": "2021"
+                                            }
+                                        ]
+                                    }
+                                    """))}),
             @ApiResponse(responseCode = "404", description = "No se encuentra la playlist",
                     content = @Content) })
     @Parameter(description = "El id de la playlist a encontrar", name = "id", required = true)
@@ -150,7 +241,30 @@ public class PlaylistController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Canción añadida con éxito",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = SinglePlaylistResponseDTO.class))}),
+                            schema = @Schema(implementation = SinglePlaylistResponseDTO.class),
+                            examples = @ExampleObject(value = """
+                                    {
+                                        "id": 12,
+                                        "name": "Random",
+                                        "description": "Una lista muy loca",
+                                        "songs": [
+                                            {
+                                                "id": 9,
+                                                "title": "Enter Sandman",
+                                                "artist": "Metallica",
+                                                "album": "Metallica",
+                                                "year": "1991"
+                                            },
+                                            {
+                                                "id": 6,
+                                                "title": "A mis cuarenta y diez",
+                                                "artist": "Joaquín Sabina",
+                                                "album": "19 días y 500 noches",
+                                                "year": "1999"
+                                            }
+                                        ]
+                                    }
+                                    """))}),
             @ApiResponse(responseCode = "404", description = "No se encuentra la playlist o la canción",
                     content = @Content) })
     @Parameters(value = {
