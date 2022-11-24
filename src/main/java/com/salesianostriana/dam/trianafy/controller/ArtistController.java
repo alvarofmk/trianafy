@@ -3,11 +3,19 @@ package com.salesianostriana.dam.trianafy.controller;
 import com.salesianostriana.dam.trianafy.model.Artist;
 import com.salesianostriana.dam.trianafy.service.ArtistService;
 import com.salesianostriana.dam.trianafy.service.SongService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.annotation.ElementType;
 import java.util.List;
 
 @RestController
@@ -18,6 +26,12 @@ public class ArtistController {
 
     private final SongService songService;
 
+    @Operation(summary = "Obtiene todos los artistas")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Artistas encontrados",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Artist.class))) }),
+            @ApiResponse(responseCode = "404", description = "No se encuentra ningún artista") })
     @GetMapping("/artist/")
     public ResponseEntity<List<Artist>> getAllArtists(){
         List<Artist> result = this.artistService.findAll();
@@ -27,11 +41,25 @@ public class ArtistController {
         return ResponseEntity.notFound().build();
     }
 
+    @Operation(summary = "Obtiene un artista por su id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Artista encontrado",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Artist.class))}),
+            @ApiResponse(responseCode = "404", description = "No se encuentra el artista") })
+    @Parameter(description = "El id del artista a encontrar",
+            name = "id")
     @GetMapping("/artist/{id}")
     public ResponseEntity<Artist> getArtistById(@PathVariable Long id){
         return ResponseEntity.of(artistService.findById(id));
     }
 
+    @Operation(summary = "Crea un nuevo artista")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Artista creado con éxito",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Artist.class))) }),
+            @ApiResponse(responseCode = "400", description = "Los datos son incorrectos") })
     @PostMapping("/artist/")
     public ResponseEntity<Artist> createArtist(@RequestBody Artist artist){
         if(artist.getName() == ""){
