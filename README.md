@@ -40,14 +40,14 @@ Aquí podéis encontrar un resumen de los endpoints, para toda la información, 
 ## Documentación
 
 ```
-- Docs - [Swagger](http://localhost:8080/docs.html)
+- Docs - http://localhost:8080/docs.html
 
 ```
 
 ## Colección de postman
 
 ```
-- [Archivo exportado en JSON](https://github.com/alvarofmk/trianafy/blob/master/FrancoMartinezAlvaro-Trianafy.postman_collection)
+- Archivo exportado en JSON - https://github.com/alvarofmk/trianafy/blob/master/FrancoMartinezAlvaro-Trianafy.postman_collection
 
 ```
 
