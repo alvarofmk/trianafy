@@ -161,7 +161,10 @@ public class SongController {
 
     }
 
-    @Operation(summary = "Borra una canción por su id")
+    @Operation(summary = "Borra una canción por su id",
+            description = "Si la canción a borrar está añadida en alguna playlists, el método elimina todas" +
+                    "las instancias de la canción de cualquier playlist antes de borrarla de la base de datos," +
+                    "para evitar un error de integridad referencial.")
     @ApiResponse(responseCode = "204", description = "Canción borrada con éxito",
             content = @Content)
     @Parameter(description = "El id de la canción a borrar", name = "id", required = true)

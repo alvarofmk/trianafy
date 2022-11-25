@@ -284,7 +284,9 @@ public class PlaylistController {
         return ResponseEntity.notFound().build();
     }
 
-    @Operation(summary = "Borra una canción de una playlist")
+    @Operation(summary = "Borra una canción de una playlist",
+            description = "Esta petición solo borra una instancia de la canción en la playlists, si esta existe " +
+                    "más de una vez en la playlist, se debería ejecutar la petición más veces para eliminarla por completo.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Canción borrada con éxito",
                     content = @Content),

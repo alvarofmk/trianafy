@@ -132,7 +132,9 @@ public class ArtistController {
         return ResponseEntity.badRequest().build();
     }
 
-    @Operation(summary = "Borra un artista por su id")
+    @Operation(summary = "Borra un artista por su id",
+            description = "Si el artista a borrar ya tiene canciones asociadas, " +
+                    "el método setea el artista a nulo en todas esas canciones antes de borrar definitivamente.")
     @ApiResponse(responseCode = "204", description = "Artista borrado con éxito",
             content = @Content)
     @Parameter(description = "El id del artista a borrar", name = "id", required = true)
