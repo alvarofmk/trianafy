@@ -39,18 +39,19 @@ Aquí podéis encontrar un resumen de los endpoints, para toda la información, 
 
 ## Documentación
 
-```
-- Docs - http://localhost:8080/docs.html
+- [Página principal de swagger](http://localhost:8080/docs.html)
 
-```
 
 ## Colección de postman
 
-```
-- Archivo exportado en JSON - https://github.com/alvarofmk/trianafy/blob/master/FrancoMartinezAlvaro-Trianafy.postman_collection
+- [Archivo JSON](https://github.com/alvarofmk/trianafy/blob/master/recursos%20trabajo/FrancoMartinezAlvaro-Trianafy.postman_collection)
 
-```
 
-## Stay in touch
+## Historias de usuario
 
-- Author - [Álvaro Franco Martínez](https://github.com/alvarofmk)
+- [Archivo excel](https://github.com/alvarofmk/trianafy/blob/master/recursos%20trabajo/Historias%20de%20usuario.xlsx)
+
+
+## Contacto
+
+- Autor - [Álvaro Franco Martínez](https://github.com/alvarofmk)
