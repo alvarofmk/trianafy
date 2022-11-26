@@ -4,21 +4,20 @@ import com.salesianostriana.dam.trianafy.model.Playlist;
 import lombok.Builder;
 import lombok.Value;
 
-@Builder
 @Value
-public class AllPlaylistsResponseDTO {
+@Builder
+public class CreatePlaylistResponseDTO {
 
     private Long id;
     private String name;
-    private long numberOfSongs;
+    private String description;
 
-    public static AllPlaylistsResponseDTO of(Playlist playlist){
-        return AllPlaylistsResponseDTO.builder()
+    public static CreatePlaylistResponseDTO of(Playlist playlist){
+        return CreatePlaylistResponseDTO.builder()
                 .id(playlist.getId())
                 .name(playlist.getName())
-                .numberOfSongs(playlist.getSongs().size())
+                .description(playlist.getDescription())
                 .build();
     }
 
 }
-

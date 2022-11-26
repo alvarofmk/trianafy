@@ -1,9 +1,6 @@
 package com.salesianostriana.dam.trianafy.controller;
 
-import com.salesianostriana.dam.trianafy.dtos.AllPlaylistsResponseDTO;
-import com.salesianostriana.dam.trianafy.dtos.CreatePlaylistRequestDTO;
-import com.salesianostriana.dam.trianafy.dtos.SinglePlaylistResponseDTO;
-import com.salesianostriana.dam.trianafy.dtos.SongResponseDTO;
+import com.salesianostriana.dam.trianafy.dtos.*;
 import com.salesianostriana.dam.trianafy.model.Artist;
 import com.salesianostriana.dam.trianafy.model.Playlist;
 import com.salesianostriana.dam.trianafy.model.Song;
@@ -45,13 +42,11 @@ public class PlaylistController {
                                         {
                                             "id": 12,
                                             "name": "Random",
-                                            "description": "Una lista muy loca",
                                             "numberOfSongs": 4
                                         },
                                         {
                                             "id": 25,
                                             "name": "Electro",
-                                            "description": "Drum n bass y otros",
                                             "numberOfSongs": 457
                                         }
                                     ]
@@ -107,22 +102,21 @@ public class PlaylistController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Playlist creada con éxito",
                     content = { @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = AllPlaylistsResponseDTO.class)),
+                            array = @ArraySchema(schema = @Schema(implementation = CreatePlaylistResponseDTO.class)),
                             examples = @ExampleObject(value = """
                                     {
                                         "id": 13,
                                         "name": "Electro",
-                                        "description": "Liquid DnB etc",
-                                        "numberOfSongs": 0
+                                        "description": "Liquid DnB etc"
                                     }
                                     """)) }),
             @ApiResponse(responseCode = "400", description = "Los datos son incorrectos",
                     content = @Content) })
     @RequestBody(required = true, description = "Los datos de la nueva playlist")
     @PostMapping("/list/")
-    public ResponseEntity<AllPlaylistsResponseDTO> createPlaylist(@org.springframework.web.bind.annotation.RequestBody CreatePlaylistRequestDTO createPlaylistRequest){
+    public ResponseEntity<CreatePlaylistResponseDTO> createPlaylist(@org.springframework.web.bind.annotation.RequestBody CreatePlaylistRequestDTO createPlaylistRequest){
         if(createPlaylistRequest.getName() != ""){
-            return ResponseEntity.status(HttpStatus.CREATED).body(AllPlaylistsResponseDTO.of(playlistService.add(createPlaylistRequest.toPlaylist())));
+            return ResponseEntity.status(HttpStatus.CREATED).body(CreatePlaylistResponseDTO.of(playlistService.add(createPlaylistRequest.toPlaylist())));
         }
         return ResponseEntity.badRequest().build();
     }
@@ -136,7 +130,6 @@ public class PlaylistController {
                                     {
                                         "id": 13,
                                         "name": "Electro",
-                                        "description": "Liquid, DnB, hardstep, dubstep, house, etc",
                                         "numberOfSongs": 0
                                     }
                                     """))}),

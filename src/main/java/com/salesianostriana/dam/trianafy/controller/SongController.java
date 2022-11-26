@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.trianafy.controller;
 
+import com.salesianostriana.dam.trianafy.dtos.SingleSongResponseDTO;
 import com.salesianostriana.dam.trianafy.dtos.SongRequestDTO;
 import com.salesianostriana.dam.trianafy.dtos.SongResponseDTO;
 import com.salesianostriana.dam.trianafy.model.Artist;
@@ -70,7 +71,7 @@ public class SongController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Canción encontrado",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Song.class),
+                            schema = @Schema(implementation = SingleSongResponseDTO.class),
                             examples = @ExampleObject(value = """
                                     {
                                         "id": 9,
@@ -79,7 +80,7 @@ public class SongController {
                                         "year": "1991",
                                         "artist": {
                                             "id": 3,
-                                            "name": "Metallica"
+                                            "artist": "Metallica"
                                         }
                                     }
                                     """))}),
@@ -87,8 +88,8 @@ public class SongController {
                     content = @Content) })
     @Parameter(description = "El id de la canción a encontrar", name = "id", required = true)
     @GetMapping("/song/{id}")
-    public ResponseEntity<Song> getSongById(@PathVariable Long id){
-        return ResponseEntity.of(songService.findById(id));
+    public ResponseEntity<SingleSongResponseDTO> getSongById(@PathVariable Long id){
+        return ResponseEntity.of(songService.findById(id).map(SingleSongResponseDTO::of));
     }
 
     @Operation(summary = "Crea una nueva canción")
