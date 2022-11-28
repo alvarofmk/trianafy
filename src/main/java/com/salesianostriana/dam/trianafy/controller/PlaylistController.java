@@ -278,8 +278,7 @@ public class PlaylistController {
     }
 
     @Operation(summary = "Borra una canción de una playlist",
-            description = "Esta petición solo borra una instancia de la canción en la playlists, si esta existe " +
-                    "más de una vez en la playlist, se debería ejecutar la petición más veces para eliminarla por completo.")
+            description = "Esta petición borra todas las instancias de la canción en la playlist.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Canción borrada con éxito",
                     content = @Content),
@@ -293,10 +292,10 @@ public class PlaylistController {
     public ResponseEntity<?> removeSongFromPlaylist(@PathVariable Long id, @PathVariable Long idSong){
             return playlistService.findById(id).map(playlist -> {
                 Song toRemove = songService.findById(idSong).get();
-                if(playlist.getSongs().contains(toRemove)){
+                while(playlist.getSongs().contains(toRemove)){
                     playlist.deleteSong(toRemove);
-                    playlistService.edit(playlist);
                 }
+                playlistService.edit(playlist);
                 return ResponseEntity.noContent().build();
             }).orElse(ResponseEntity.notFound().build());
     }
