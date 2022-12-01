@@ -1,16 +1,15 @@
 package com.salesianostriana.dam.trianafy.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 public class Song {
 
@@ -26,5 +25,12 @@ public class Song {
     @ManyToOne(fetch = FetchType.EAGER)
     private Artist artist;
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Song song = (Song) obj;
+        return Objects.equals(id, song.id);
+    }
 
 }
