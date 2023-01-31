@@ -9,6 +9,7 @@ import com.salesianostriana.dam.trianafy.repos.SongRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,12 +24,15 @@ public class SongService {
         return repository.save(song);
     }
 
-    public Optional<Song> findById(Long id) {
-        return repository.findById(id);
+    public Song findById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new EntityNotFoundException("No se ha encontrado la canción con id " + id));
     }
 
     public List<Song> findAll() {
-        return repository.findAll();
+        List<Song> result = repository.findAll();
+        if(result.isEmpty())
+            throw new EntityNotFoundException("No existe ninguna canción.");
+        return result;
     }
 
     public Song edit(Song song) {
@@ -52,6 +56,10 @@ public class SongService {
                 .year(songDTO.getYear())
                 .artist(artistService.findById(songDTO.getArtistId()).get())
                 .build();
+    }
+
+    public boolean checkSongAndArtist(String songName, Long artistId){
+        return repository.existsByTitleAndArtistId(songName, artistId);
     }
 
 }

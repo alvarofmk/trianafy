@@ -230,7 +230,7 @@ public class PlaylistController {
         return new ModelAndView("redirect:/list/" + id);
     }
 
-    @Operation(summary = "Añade una canción a una playlist")
+    /*@Operation(summary = "Añade una canción a una playlist")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Canción añadida con éxito",
                     content = { @Content(mediaType = "application/json",
@@ -298,6 +298,6 @@ public class PlaylistController {
                 playlistService.edit(playlist);
                 return ResponseEntity.noContent().build();
             }).orElse(ResponseEntity.notFound().build());
-    }
+    }*/
 
 }

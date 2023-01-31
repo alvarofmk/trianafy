@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,12 +60,9 @@ public class SongController {
             @ApiResponse(responseCode = "404", description = "No se encuentra ninguna canción",
                     content = @Content) })
     @GetMapping("/song/")
-    public ResponseEntity<List<SongResponseDTO>> getAllSongs(){
+    public List<SongResponseDTO> getAllSongs(){
         List<Song> result = songService.findAll();
-        if(!result.isEmpty()){
-            return ResponseEntity.ok(result.stream().map(SongResponseDTO::of).collect(Collectors.toList()));
-        }
-        return ResponseEntity.notFound().build();
+        return result.stream().map(SongResponseDTO::of).collect(Collectors.toList());
     }
 
     @Operation(summary = "Obtiene una cancion por su id")
@@ -88,8 +86,8 @@ public class SongController {
                     content = @Content) })
     @Parameter(description = "El id de la canción a encontrar", name = "id", required = true)
     @GetMapping("/song/{id}")
-    public ResponseEntity<SingleSongResponseDTO> getSongById(@PathVariable Long id){
-        return ResponseEntity.of(songService.findById(id).map(SingleSongResponseDTO::of));
+    public SingleSongResponseDTO getSongById(@PathVariable Long id){
+        return SingleSongResponseDTO.of(songService.findById(id));
     }
 
     @Operation(summary = "Crea una nueva canción")
@@ -111,7 +109,7 @@ public class SongController {
     })
     @RequestBody(required = true, description = "Los datos de la nueva canción")
     @PostMapping("/song/")
-    public ResponseEntity<SongResponseDTO> createSong(@org.springframework.web.bind.annotation.RequestBody SongRequestDTO songRequest){
+    public ResponseEntity<SongResponseDTO> createSong(@Valid @org.springframework.web.bind.annotation.RequestBody SongRequestDTO songRequest){
         if(songRequest.getTitle() != "" && songRequest.getArtistId()!= null){
             if(artistService.existsById(songRequest.getArtistId())){
                 return ResponseEntity
@@ -123,7 +121,7 @@ public class SongController {
 
     }
 
-    @Operation(summary = "Edita una canción por su id")
+    /*@Operation(summary = "Edita una canción por su id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Canción editada con éxito",
                     content = { @Content(mediaType = "application/json",
@@ -160,9 +158,9 @@ public class SongController {
             return ResponseEntity.badRequest().build();
         }
 
-    }
+    }*/
 
-    @Operation(summary = "Borra una canción por su id",
+    /*@Operation(summary = "Borra una canción por su id",
             description = "Si la canción a borrar está añadida en alguna playlists, el método elimina todas" +
                     "las instancias de la canción de cualquier playlist antes de borrarla de la base de datos," +
                     "para evitar un error de integridad referencial.")
@@ -182,6 +180,6 @@ public class SongController {
             songService.delete(toDelete);
         }
         return ResponseEntity.noContent().build();
-    }
+    }*/
 
 }
