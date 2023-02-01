@@ -13,7 +13,7 @@ import java.time.Year;
 
 @Builder
 @Value
-@SongIsNew(title = "title", artistId = "artistId")
+@SongIsNew(title = "title", artistId = "artistId", message = "que ase")
 public class SongRequestDTO {
 
     @NotBlank
