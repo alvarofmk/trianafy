@@ -13,10 +13,10 @@ import java.time.Year;
 
 @Builder
 @Value
-@SongIsNew(title = "title", artistId = "artistId", message = "que ase")
+@SongIsNew(title = "title", artistId = "artistId", message = "{songRequestDto.songIsNew}")
 public class SongRequestDTO {
 
-    @NotBlank
+    @NotBlank(message = "{songRequestDto.name.notBlank}")
     private String title;
 
     @NotNull
